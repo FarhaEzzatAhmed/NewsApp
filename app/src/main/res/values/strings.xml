@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">news_app</string>
+    <string name="navigation_drawer_open">open</string>
+    <string name="naviggation_drawer_close">close</string>
+</resources>
