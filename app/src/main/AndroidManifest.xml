@@ -15,21 +15,21 @@
         android:theme="@style/Theme.News_app"
         tools:targetApi="31">
         <activity
-            android:name=".route.ui.itemDetails.ItemDetailsActivity"
+            android:name="com.example.news_app.route.ui.itemDetails.ItemDetailsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".route.ui.main.MainActivity"
+            android:name="com.example.news_app.route.ui.main.MainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".route.ui.Splash.SplashActivity"
+            android:name="com.example.news_app.route.ui.Splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

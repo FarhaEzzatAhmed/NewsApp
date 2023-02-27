@@ -1,37 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="12dp"
-    android:layout_margin="8dp"
-    app:contentPadding="8dp"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+<variable
+    name="category"
+    type="com.example.news_app.route.ui.categories.Category" />
 
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/container"
+        cardColor="@{
+        category.backgroundcolorId}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingVertical="8dp"
-        android:gravity="center">
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleType="fitXY"
-            tools:src="@tools:sample/backgrounds/scenic"
-            />
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
+        app:cardCornerRadius="12dp"
+        android:layout_margin="8dp"
+        app:contentPadding="8dp">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/white"
-            android:text="Sports"/>
+            android:orientation="vertical"
+            android:paddingVertical="8dp"
+            android:gravity="center">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
+                imageId="@{category.imageId}"
 
-</androidx.cardview.widget.CardView>
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/white"
+                android:text="@{category.name}"
+                tools:text="Sports" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

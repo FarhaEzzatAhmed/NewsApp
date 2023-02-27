@@ -1,46 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:scaleType="centerCrop"
-        android:layout_margin="4dp"
-        app:riv_corner_radius_top_left="20dp"
-        app:riv_corner_radius_top_right="20dp"
-        tools:src="@tools:sample/backgrounds/scenic"
+    <data>
+<variable
+    name="news"
+    type="com.example.news_app.route.api.model.newsResponse.News" />
+    </data>
 
-        />
-    <TextView
-        android:id="@+id/author"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-        tools:text="this is title"
-        />
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="22sp"
-        android:textColor="@color/black"
-        tools:text="this is title"
-        />
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:gravity="end"
-        android:layout_marginEnd="10dp"
-        tools:text="this is title"
-        />
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:layout_margin="4dp"
+            imageUrl="@{news.urlToImage}"
+            app:riv_corner_radius_top_left="20dp"
+            app:riv_corner_radius_top_right="20dp"
+            tools:src="@tools:sample/backgrounds/scenic"
 
-</LinearLayout>
+            />
+
+        <TextView
+            android:id="@+id/author"
+            android:text="@{news.author}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+
+            tools:text="this is title" />
+
+        <TextView
+            android:id="@+id/title"
+            android:text="@{news.title}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:textColor="@color/black"
+            tools:text="this is title" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:gravity="end"
+            android:text="@{news.publishedAt}"
+            android:layout_marginEnd="10dp"
+            tools:text="this is title" />
+
+    </LinearLayout>
+</layout>

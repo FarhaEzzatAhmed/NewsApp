@@ -11,6 +11,10 @@ class CategoriesRecyclerAdapter(val items:List<Category>):RecyclerView.Adapter<C
     class CategoriesRecyclerAdapter{
         class ViewHolder(val itemBinding:ItemCategoryBinding)
             :RecyclerView.ViewHolder(itemBinding.root){
+                fun bind(category:Category){
+                    itemBinding.category = category
+                    itemBinding.invalidateAll()
+                }
 
 
 
@@ -29,9 +33,12 @@ class CategoriesRecyclerAdapter(val items:List<Category>):RecyclerView.Adapter<C
     }
 
     override fun onBindViewHolder(holder: CategoriesRecyclerAdapter.ViewHolder, position: Int) {
-        holder.itemBinding.title.setText(items[position].name)
-        holder.itemBinding.container.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,items[position].backgroundcolorId ))
-        holder.itemBinding.image.setImageResource(items[position].imageId)
+          holder.bind(items[position])
+
+
+        //holder.itemBinding.title.setText(items[position].name)
+       // holder.itemBinding.container.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,items[position].backgroundcolorId ))
+       // holder.itemBinding.image.setImageResource(items[position].imageId)
 
        // we use let instade of use if it is not null
         onItemClickListener?.let { clickListener->

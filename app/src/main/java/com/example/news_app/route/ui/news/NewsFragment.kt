@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.news_app.databinding.FragmentNewsBinding
 import com.example.news_app.route.api.ApiConstans
 import com.example.news_app.route.api.ApiManager
@@ -31,6 +32,14 @@ class NewsFragment :Fragment(){
     }
     lateinit var  source :Source
     lateinit var viewBinding: FragmentNewsBinding
+    lateinit var viewModel: NewsViewModel
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
+
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,9 +53,25 @@ class NewsFragment :Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        getNews()
+        viewModel.getNews(source.id?:"")
+        subscribeToLiveData()
 
     }
+
+       fun subscribeToLiveData() {
+           viewModel.newsList.observe(viewLifecycleOwner){
+               bindNewsList(it)
+           }
+           viewModel.showError.observe(viewLifecycleOwner){
+               showErrorLayout(it)
+           }
+           viewModel.showLoading.observe(viewLifecycleOwner){
+               if (it)showLoadingLayout()
+               else hideLoadingLayout()
+           }
+
+    }
+
     val newsAdapter = NewsAdapter(null)
     private fun initRecyclerView() {
         viewBinding.newsRecycler.adapter = newsAdapter
@@ -66,34 +91,7 @@ class NewsFragment :Fragment(){
         }
     }
 
-    private fun getNews() {
-        showLoadingLayout()
-        ApiManager
-            .getApis()
-            .getNews(ApiConstans.apiKey,source.id?:"")
-            .enqueue(object :Callback<NewsResponse>{
-                override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
-                   showErrorLayout(t.localizedMessage)
 
-
-                }
-
-                override fun onResponse(
-                    call: Call<NewsResponse>,
-                    response: Response<NewsResponse>
-                ) {
-                    if (response.isSuccessful){
-                        // we have news to show
-                        bindNewsList(response.body()?.articles)
-                        return
-                    }
-                      val errorResponse = Gson().fromJson(
-                         response.errorBody()?.string(), NewsResponse::class.java)
-                        showErrorLayout(errorResponse.message)
-
-                }
-            })
-    }
 
     private fun bindNewsList(articles: List<News?>?) {
         // show news in recycler view
@@ -107,6 +105,9 @@ class NewsFragment :Fragment(){
     private fun showLoadingLayout(){
         viewBinding.loddingIndicator.isVisible = true
         viewBinding.errorLayout.isVisible = false
+    }
+    private fun hideLoadingLayout(){
+        viewBinding.loddingIndicator.isVisible = false
     }
 
     private fun showErrorLayout(message: String?) {

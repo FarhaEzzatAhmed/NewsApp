@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.news_app.R
 import com.example.news_app.databinding.FragmentDetailsCategoryBinding
 
@@ -25,21 +27,42 @@ import retrofit2.Response
 class CategoryDetailsFragment:Fragment() {
     val apiKey = "76dead7874004ebe922e3d9575a505bb"
     lateinit var viewBinding :FragmentDetailsCategoryBinding
-
+    lateinit var viewModel: CategoryDetailsViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewBinding = FragmentDetailsCategoryBinding.inflate(
+         viewBinding = FragmentDetailsCategoryBinding.inflate(
          inflater,container,false
      )
         return viewBinding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(CategoryDetailsViewModel::class.java)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadNewsSources();
+        viewModel.loadNewsSources(category.id)
+        subscribeToLiveData()
+
+    }
+    fun subscribeToLiveData(){
+        viewModel.sourcesLiveData.observe(viewLifecycleOwner){
+            bindSourcesInTabLayout(it)
+        }
+
+        viewModel.showLoadingLayout.observe(viewLifecycleOwner){show->
+             if(show)
+            showLoadingLayout()
+            else hideLoading()
+        }
+        viewModel.showErrorLayout.observe(viewLifecycleOwner) {
+            showErrorLayout(it)
+        }
 
     }
     fun changeNewsFragment(source: Source){
@@ -50,45 +73,14 @@ class CategoryDetailsFragment:Fragment() {
 
     }
 
-    private fun loadNewsSources() {
-        showLoadingLayout()
 
-        ApiManager
-            .getApis()
-            .getSources(ApiConstans.apiKey,category.id)
-            .enqueue(object :Callback<SourcesResponse>{
-                override fun onResponse(
-                    call: Call<SourcesResponse>,
-                    response: Response<SourcesResponse>
-                ) {
-                    //viewBinding.loddingIndicator.visibility = View.GONE
-                    // or
-                    viewBinding.loddingIndicator.isVisible = false
-                    if (response.isSuccessful){
-                    bindSourcesInTabLayout(response.body()?.sources)
-                   // response.body().sources
-                }else
-                    {
-                        val gson =Gson()
-                        val errorResponse =
-                        gson.fromJson(response.errorBody()?.string(), SourcesResponse::class.java)
-                        showErrorLayout(errorResponse.message)
-
-
-                    }
-                }
-
-                     override fun onFailure(call: Call<SourcesResponse>, t: Throwable) {
-                       viewBinding.loddingIndicator.isVisible = false
-                        showErrorLayout(t.localizedMessage)
-
-                    }
-            })
-
-    }
     private fun showLoadingLayout(){
         viewBinding.loddingIndicator.isVisible = true
         viewBinding.errorLayout.isVisible = false
+    }
+    private fun hideLoading(){
+        viewBinding.loddingIndicator.isVisible =false
+
     }
     private fun showErrorLayout(message: String?) {
         viewBinding.errorLayout.isVisible = true
@@ -133,6 +125,7 @@ class CategoryDetailsFragment:Fragment() {
     }
 
     lateinit var  category: Category
+
     companion object{
         fun getInstance(category: Category):CategoryDetailsFragment {
             val fragment = CategoryDetailsFragment()

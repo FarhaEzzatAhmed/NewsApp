@@ -12,7 +12,12 @@ import com.example.news_app.route.ui.categories.Category
 class NewsAdapter(var items:List<News?>?) :RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
     var onClickListener : OnclickListener?=null
     class ViewHolder(val viewBinding: ItemNewsBinding)
-        :RecyclerView.ViewHolder(viewBinding.root)
+        :RecyclerView.ViewHolder(viewBinding.root){
+            fun bind(news: News?){
+                viewBinding.news = news
+                viewBinding.executePendingBindings()
+            }
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val viewBinding = ItemNewsBinding.inflate(
@@ -24,13 +29,14 @@ class NewsAdapter(var items:List<News?>?) :RecyclerView.Adapter<NewsAdapter.View
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items?.get(position)!!
-        holder.viewBinding.author.text = item?.author
-        holder.viewBinding.title.text = item?.title
-        holder.viewBinding.time.text = item?.publishedAt
-        Glide.with(holder.itemView)
-            .load(item?.urlToImage)
-            .placeholder(R.drawable.ic_image)
-            .into(holder.viewBinding.image)
+        //holder.viewBinding.author.text = item?.author
+        //holder.viewBinding.title.text = item?.title
+        //holder.viewBinding.time.text = item?.publishedAt
+        holder.bind(item)
+        //Glide.with(holder.itemView)
+          //  .load(item?.urlToImage)
+            //.placeholder(R.drawable.ic_image)
+            //.into(holder.viewBinding.image)
         holder.itemView.setOnClickListener{
             onClickListener?.onNewsClick(item!!)
         }

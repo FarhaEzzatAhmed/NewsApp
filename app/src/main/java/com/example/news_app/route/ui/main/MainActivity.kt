@@ -3,6 +3,7 @@ package com.example.news_app.route.ui.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.databinding.DataBindingUtil
 import com.example.news_app.R
 import com.example.news_app.databinding.ActivityMainBinding
 import com.example.news_app.route.ui.categories.CategoriesFragment
@@ -20,16 +21,15 @@ class MainActivity : AppCompatActivity() ,
     val categoriesFragment= CategoriesFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(viewBinding.root)
+        viewBinding =DataBindingUtil.setContentView(this,R.layout.activity_main)
         val toggle =  ActionBarDrawerToggle(
-            this,viewBinding.root,viewBinding.toolbar,
+            this,viewBinding.drawer,viewBinding.toolbar,
             R.string.navigation_drawer_open,
             R.string.naviggation_drawer_close
 
 
         )
-        viewBinding.root.addDrawerListener(toggle)
+        viewBinding.drawer.addDrawerListener(toggle)
         toggle.syncState()
         viewBinding.navView.setNavigationItemSelectedListener{ item->
             when(item.itemId){
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() ,
 
                 }
             }
-            viewBinding.root.closeDrawers()
+            viewBinding.drawer.closeDrawers()
 
             return@setNavigationItemSelectedListener true
 
