@@ -79,10 +79,10 @@ class NewsFragment :Fragment(){
             override fun onNewsClick(news: News) {
                 val intent = Intent(requireContext(),ItemDetailsActivity::class.java).apply {
                     putExtra("realName",news.author)
-                    putExtra("heroName",news.title)
-                    putExtra("heroBio",news.publishedAt)
+                    putExtra("newsName",news.title)
+                    putExtra("newsBio",news.publishedAt)
                     putExtra("description",news.content)
-                    putExtra("heroImg",news.urlToImage)
+                    putExtra("newsImg",news.urlToImage)
 
                 }
                 startActivity(intent)

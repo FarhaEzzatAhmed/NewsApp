@@ -28,12 +28,12 @@ class ItemDetailsActivity : AppCompatActivity() {
         //val intent = intent.extras
 
         auther?.setText(intent!!.getStringExtra("realName"))
-        title?.setText(intent!!.getStringExtra("heroName"))
-        time?.setText(intent!!.getStringExtra("heroBio"))
+        title?.setText(intent!!.getStringExtra("newsName"))
+        time?.setText(intent!!.getStringExtra("newsBio"))
         description?.setText(intent!!.getStringExtra("description"))
 
         Glide.with(this)
-            .load(intent!!.getStringExtra("heroImg"))
+            .load(intent!!.getStringExtra("newsImg"))
             .transition(
                 DrawableTransitionOptions.withCrossFade(
                     DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
