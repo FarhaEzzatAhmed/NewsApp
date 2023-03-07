@@ -13,8 +13,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/container"
-        cardColor="@{
-        category.backgroundcolorId}"
+        cardColor="@{category.backgroundcolorId}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="12dp"
